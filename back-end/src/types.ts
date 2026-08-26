@@ -19,8 +19,8 @@ export interface ReservationsTable {
   mobile_number: string;
   reservation_date: string;
   reservation_time: string;
-  people: number;
-  status: "booked" | "seated" | "finished" | "cancelled";
+  party_size: number;
+  status: "booked" | "seated" | "finished" | "cancelled" | null;
   created_at: Generated<Date>;
   updated_at: Generated<Date>;
 }

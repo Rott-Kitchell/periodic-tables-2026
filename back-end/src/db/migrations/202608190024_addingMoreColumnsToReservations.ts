@@ -8,7 +8,7 @@ export async function up(db: Kysely<any>): Promise<void> {
     .addColumn("mobile_number", "varchar", (col) => col.notNull())
     .addColumn("reservation_date", "date", (col) => col.notNull())
     .addColumn("reservation_time", "time", (col) => col.notNull())
-    .addColumn("people", "integer", (col) => col.notNull())
+    .addColumn("party_size", "integer", (col) => col.notNull())
     .addColumn("status", "varchar", (col) => col.notNull().defaultTo("booked"))
     .execute();
 }
@@ -21,7 +21,7 @@ export async function down(db: Kysely<any>): Promise<void> {
     .dropColumn("mobile_number")
     .dropColumn("reservation_date")
     .dropColumn("reservation_time")
-    .dropColumn("people")
+    .dropColumn("party_size")
     .dropColumn("status")
     .execute();
 }

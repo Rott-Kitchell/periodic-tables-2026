@@ -2,8 +2,17 @@ import { Kysely, sql } from "kysely";
 
 export async function up(db: Kysely<any>): Promise<void> {
   await db.schema
-    .createTable("reservations")
-    .addColumn("reservation_id", "serial", (col) => col.primaryKey())
+    .createTable("tables")
+    .addColumn("table_id", "serial", (col) => col.primaryKey())
+    .addColumn("table_name", "varchar")
+    .addColumn("capacity", "integer", (col) => col.unsigned())
+    .addColumn("reservation_id", "integer", (col) =>
+      col
+        .unsigned()
+        .defaultTo(null)
+        .references("reservations.reservation_id")
+        .onDelete("cascade"),
+    )
     .addColumn("created_at", "timestamp", (col) =>
       col.notNull().defaultTo(sql`now()`),
     )
