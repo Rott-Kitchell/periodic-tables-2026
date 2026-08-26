@@ -1,38 +1,51 @@
 import { beforeAll, beforeEach, afterAll } from "vitest";
 import { Kysely } from "kysely";
-import { setupTestDb } from "./helpers";
-import { runGlobalSeed } from "./seed";
-import { Database } from "../src/types";
+import { setupTestDb } from "./helpers.js";
+import { runGlobalSeed } from "./seed.js";
+import type { Database } from "../src/types.js";
 
 export function useTestLifecycle() {
   let dbInstance: Kysely<Database>;
-  let dropDatabaseSchema: () => Promise<void>;
+  let currentSchema: string;
+  let dropDatabaseSchema: () => Promise<void> | undefined;
 
   beforeAll(async () => {
-    const { db, migrator, cleanup } = await setupTestDb();
-    dbInstance = db;
-    dropDatabaseSchema = cleanup;
+    try {
+      const { db, migrator, cleanup, schemaName } = await setupTestDb();
+      dbInstance = db;
+      currentSchema = schemaName;
+      dropDatabaseSchema = cleanup;
 
-    const { error } = await migrator.migrateToLatest();
-    if (error) {
-      console.error("Test migration sequence failed:", error);
-      throw error;
+      const { error } = await migrator.migrateToLatest();
+      if (error) {
+        console.error("Test migration sequence failed:", error);
+        throw error;
+      }
+    } catch (err) {
+      console.error(
+        "Failed to initialize test database layout structure:",
+        err,
+      );
+      throw err;
     }
   });
 
   beforeEach(async () => {
-    await dbInstance.deleteFrom("tables").execute();
-    await dbInstance.deleteFrom("reservations").execute();
     await runGlobalSeed(dbInstance);
   });
 
   afterAll(async () => {
-    await dropDatabaseSchema();
+    if (typeof dropDatabaseSchema === "function") {
+      await dropDatabaseSchema();
+    }
   });
 
   return {
     get db() {
       return dbInstance;
+    },
+    get schema() {
+      return currentSchema;
     },
   };
 }

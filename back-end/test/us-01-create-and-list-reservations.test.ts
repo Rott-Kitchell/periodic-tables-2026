@@ -1,6 +1,5 @@
-import { describe, test, expect } from "vitest";
-import app from "../src/app";
-import { useTestLifecycle } from "./lifecycle";
+import app from "../src/app.js";
+import { useTestLifecycle } from "./lifecycle.js";
 
 describe("US-01 - Create and list reservations", () => {
   const context = useTestLifecycle();
@@ -14,7 +13,8 @@ describe("US-01 - Create and list reservations", () => {
             headers: { Accept: "application/json" },
           },
           {
-            variables: { db: context.db },
+            db: context.db,
+            schema: context.schema,
           },
         );
         expect(response.status).toBe(404);
@@ -32,7 +32,8 @@ describe("US-01 - Create and list reservations", () => {
           headers: { Accept: "application/json" },
         },
         {
-          variables: { db: context.db },
+          db: context.db,
+          schema: context.schema,
         },
       );
       expect(response.status).toBe(404);
@@ -54,7 +55,8 @@ describe("US-01 - Create and list reservations", () => {
           body: JSON.stringify({ datum: {} }),
         },
         {
-          variables: { db: context.db },
+          db: context.db,
+          schema: context.schema,
         },
       );
       expect(response.status).toBe(400);
@@ -82,7 +84,38 @@ describe("US-01 - Create and list reservations", () => {
           body: JSON.stringify({ data: invalidData }),
         },
         {
-          variables: { db: context.db },
+          db: context.db,
+          schema: context.schema,
+        },
+      );
+      expect(response.status).toBe(400);
+      const body = await response.json();
+      expect(body.error).toContain("first_name");
+    });
+
+    test("returns 400 if first_name is empty", async () => {
+      const invalidData = {
+        first_name: "",
+        last_name: "last",
+        mobile_number: "800-555-1212",
+        reservation_date: "2026-01-01",
+        reservation_time: "13:30",
+        party_size: 1,
+      };
+
+      const response = await app.request(
+        "/reservations",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({ data: invalidData }),
+        },
+        {
+          db: context.db,
+          schema: context.schema,
         },
       );
       expect(response.status).toBe(400);
@@ -110,7 +143,8 @@ describe("US-01 - Create and list reservations", () => {
           body: JSON.stringify({ data: invalidData }),
         },
         {
-          variables: { db: context.db },
+          db: context.db,
+          schema: context.schema,
         },
       );
       expect(response.status).toBe(400);
@@ -139,7 +173,8 @@ describe("US-01 - Create and list reservations", () => {
           body: JSON.stringify({ data: invalidData }),
         },
         {
-          variables: { db: context.db },
+          db: context.db,
+          schema: context.schema,
         },
       );
       expect(response.status).toBe(400);
@@ -147,7 +182,7 @@ describe("US-01 - Create and list reservations", () => {
       expect(body.error).toContain("last_name");
     });
 
-    test("returns 400 if mobile_phone is missing", async () => {
+    test("returns 400 if mobile_number is missing", async () => {
       const invalidData = {
         first_name: "first",
         last_name: "last",
@@ -167,15 +202,16 @@ describe("US-01 - Create and list reservations", () => {
           body: JSON.stringify({ data: invalidData }),
         },
         {
-          variables: { db: context.db },
+          db: context.db,
+          schema: context.schema,
         },
       );
       expect(response.status).toBe(400);
       const body = await response.json();
-      expect(body.error).toContain("mobile_phone");
+      expect(body.error).toContain("mobile_number");
     });
 
-    test("returns 400 if mobile_phone is empty", async () => {
+    test("returns 400 if mobile_number is empty", async () => {
       const invalidData = {
         first_name: "first",
         last_name: "last",
@@ -196,12 +232,13 @@ describe("US-01 - Create and list reservations", () => {
           body: JSON.stringify({ data: invalidData }),
         },
         {
-          variables: { db: context.db },
+          db: context.db,
+          schema: context.schema,
         },
       );
       expect(response.status).toBe(400);
       const body = await response.json();
-      expect(body.error).toContain("mobile_phone");
+      expect(body.error).toContain("mobile_number");
     });
 
     test("returns 400 if reservation_date is missing", async () => {
@@ -224,7 +261,8 @@ describe("US-01 - Create and list reservations", () => {
           body: JSON.stringify({ data: invalidData }),
         },
         {
-          variables: { db: context.db },
+          db: context.db,
+          schema: context.schema,
         },
       );
       expect(response.status).toBe(400);
@@ -253,7 +291,8 @@ describe("US-01 - Create and list reservations", () => {
           body: JSON.stringify({ data: invalidData }),
         },
         {
-          variables: { db: context.db },
+          db: context.db,
+          schema: context.schema,
         },
       );
       expect(response.status).toBe(400);
@@ -282,7 +321,8 @@ describe("US-01 - Create and list reservations", () => {
           body: JSON.stringify({ data: invalidData }),
         },
         {
-          variables: { db: context.db },
+          db: context.db,
+          schema: context.schema,
         },
       );
       expect(response.status).toBe(400);
@@ -294,7 +334,7 @@ describe("US-01 - Create and list reservations", () => {
       const invalidData = {
         first_name: "first",
         last_name: "last",
-        mobile_numbe: "800-555-1212",
+        mobile_number: "800-555-1212",
         reservation_date: "2026-01-01",
         party_size: 1,
       };
@@ -310,7 +350,8 @@ describe("US-01 - Create and list reservations", () => {
           body: JSON.stringify({ data: invalidData }),
         },
         {
-          variables: { db: context.db },
+          db: context.db,
+          schema: context.schema,
         },
       );
       expect(response.status).toBe(400);
@@ -339,7 +380,8 @@ describe("US-01 - Create and list reservations", () => {
           body: JSON.stringify({ data: invalidData }),
         },
         {
-          variables: { db: context.db },
+          db: context.db,
+          schema: context.schema,
         },
       );
       expect(response.status).toBe(400);
@@ -368,7 +410,8 @@ describe("US-01 - Create and list reservations", () => {
           body: JSON.stringify({ data: invalidData }),
         },
         {
-          variables: { db: context.db },
+          db: context.db,
+          schema: context.schema,
         },
       );
       expect(response.status).toBe(400);
@@ -380,7 +423,7 @@ describe("US-01 - Create and list reservations", () => {
       const invalidData = {
         first_name: "first",
         last_name: "last",
-        mobile_numbe: "800-555-1212",
+        mobile_number: "800-555-1212",
         reservation_date: "2026-01-01",
         reservation_time: "13:30",
       };
@@ -396,7 +439,8 @@ describe("US-01 - Create and list reservations", () => {
           body: JSON.stringify({ data: invalidData }),
         },
         {
-          variables: { db: context.db },
+          db: context.db,
+          schema: context.schema,
         },
       );
       expect(response.status).toBe(400);
@@ -425,7 +469,8 @@ describe("US-01 - Create and list reservations", () => {
           body: JSON.stringify({ data: invalidData }),
         },
         {
-          variables: { db: context.db },
+          db: context.db,
+          schema: context.schema,
         },
       );
       expect(response.status).toBe(400);
@@ -454,7 +499,8 @@ describe("US-01 - Create and list reservations", () => {
           body: JSON.stringify({ data: invalidData }),
         },
         {
-          variables: { db: context.db },
+          db: context.db,
+          schema: context.schema,
         },
       );
       expect(response.status).toBe(400);
@@ -462,7 +508,7 @@ describe("US-01 - Create and list reservations", () => {
       expect(body.error).toContain("party_size");
     });
 
-    test("returns 4201 if data is valid", async () => {
+    test("returns 201 if data is valid", async () => {
       const validData = {
         first_name: "first",
         last_name: "last",
@@ -483,12 +529,19 @@ describe("US-01 - Create and list reservations", () => {
           body: JSON.stringify({ data: validData }),
         },
         {
-          variables: { db: context.db },
+          db: context.db,
+          schema: context.schema,
         },
       );
+
+      if (response.status === 500) {
+        const rawTextBody = await response.text();
+        console.error("⛔ EXPLICIT TEST FAILURE DISCOVERY LOG:", rawTextBody);
+      }
+
       expect(response.status).toBe(201);
       const body = await response.json();
-      expect(body.error).toBeDefined();
+      expect(body.error).toBeUndefined();
       expect(body.data).toEqual(
         expect.objectContaining({
           first_name: "first",

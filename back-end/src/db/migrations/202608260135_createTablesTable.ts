@@ -3,12 +3,15 @@ import { Kysely, sql } from "kysely";
 export async function up(db: Kysely<any>): Promise<void> {
   await db.schema
     .createTable("tables")
+    .ifNotExists()
     .addColumn("table_id", "serial", (col) => col.primaryKey())
-    .addColumn("table_name", "varchar")
-    .addColumn("capacity", "integer", (col) => col.unsigned())
+    .addColumn("table_name", "varchar", (col) => col.notNull())
+    .addColumn("capacity", "integer", (col) =>
+      col.notNull().check(sql`capacity > 0`),
+    )
     .addColumn("reservation_id", "integer", (col) =>
       col
-        .unsigned()
+
         .defaultTo(null)
         .references("reservations.reservation_id")
         .onDelete("cascade"),
@@ -23,5 +26,5 @@ export async function up(db: Kysely<any>): Promise<void> {
 }
 
 export async function down(db: Kysely<any>): Promise<void> {
-  await db.schema.dropTable("reservations").execute();
+  await db.schema.dropTable("tables").execute();
 }

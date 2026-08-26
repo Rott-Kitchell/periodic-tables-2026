@@ -1,5 +1,5 @@
 import { Kysely, sql } from "kysely";
-import { Database } from "../src/types";
+import type { Database } from "../src/types.js";
 
 export async function runGlobalSeed(db: Kysely<Database>): Promise<void> {
   await sql`TRUNCATE TABLE reservations, tables RESTART IDENTITY CASCADE`.execute(

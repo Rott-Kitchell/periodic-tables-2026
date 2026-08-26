@@ -7,7 +7,11 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
-    "start": "node dist/server.js"
+    "start": "node dist/server.js",
+    "test": "vitest run --reporter=verbose --passWithNoTests",
+    "migrate:latest": "kysely migrate:latest",
+    "migrate:rollback": "kysely migrate:rollback",
+    "migrate:status": "kysely migrate:status"
   },
   "dependencies": {
     "@hono/node-server": "^2.1.1",
@@ -20,6 +24,7 @@
   "devDependencies": {
     "@types/node": "^26.2.0",
     "@types/pg": "^8.21.0",
+    "kysely-ctl": "^0.21.0",
     "tsx": "^4.23.12",
     "typescript": "^7.0.2",
     "vitest": "^4.1.10"

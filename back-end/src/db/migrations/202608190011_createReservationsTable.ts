@@ -3,6 +3,7 @@ import { Kysely, sql } from "kysely";
 export async function up(db: Kysely<any>): Promise<void> {
   await db.schema
     .createTable("reservations")
+    .ifNotExists()
     .addColumn("reservation_id", "serial", (col) => col.primaryKey())
     .addColumn("created_at", "timestamp", (col) =>
       col.notNull().defaultTo(sql`now()`),

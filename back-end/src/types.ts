@@ -20,7 +20,7 @@ export interface ReservationsTable {
   reservation_date: string;
   reservation_time: string;
   party_size: number;
-  status: "booked" | "seated" | "finished" | "cancelled" | null;
+  status: Generated<"booked" | "seated" | "finished" | "cancelled">;
   created_at: Generated<Date>;
   updated_at: Generated<Date>;
 }

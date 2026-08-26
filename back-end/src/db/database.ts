@@ -1,22 +1,17 @@
-import type { Database } from "../types.ts";
-import { Pool } from "pg";
+import type { Database } from "../types.js";
+import pkg from "pg";
+const { Pool } = pkg;
 import { Kysely, PostgresDialect } from "kysely";
-
-// const dialect = new PostgresDialect({
-//   pool: new Pool({
-//     connectionString: process.env.DATABASE_URL,
-//     max: 10,
-//   }),
-// });
-
-// export const db = new Kysely<Database>({
-//   dialect,
-// });
 
 export function createDbInstance(connectionString: string) {
   return new Kysely<Database>({
     dialect: new PostgresDialect({
-      pool: new Pool({ connectionString }),
+      pool: new Pool({
+        connectionString,
+        max: 1,
+        idleTimeoutMillis: 1000,
+        connectionTimeoutMillis: 2000,
+      }),
     }),
   });
 }
