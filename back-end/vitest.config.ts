@@ -6,7 +6,7 @@ export default defineConfig({
   test: {
     globals: true,
     pool: "forks",
-    fileParallelism: true,
+    fileParallelism: false,
     reporters: ["default"],
     include: ["test/**/*.test.ts"],
     execArgv: ["--env-file=.env"],

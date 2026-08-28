@@ -8,7 +8,8 @@ export function createDbInstance(connectionString: string) {
     dialect: new PostgresDialect({
       pool: new Pool({
         connectionString,
-        max: 1,
+        min: 1,
+        max: 5,
         idleTimeoutMillis: 1000,
         connectionTimeoutMillis: 2000,
       }),
