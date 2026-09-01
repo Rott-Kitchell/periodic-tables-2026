@@ -47,7 +47,7 @@ describe("US-01 - Create and list reservations", () => {
     });
 
     test("returns reservations sorted by time (earliest time first)", async () => {
-      expect.assertions(3);
+      expect.assertions(4);
       const response = await app.request(
         "/reservations?date=2026-12-15",
         {
@@ -60,9 +60,9 @@ describe("US-01 - Create and list reservations", () => {
       );
       const body = await response.json();
       expect(response.status).toBe(200);
-      expect(body.data).toHaveLength(2);
+      expect(body.data).toHaveLength(4);
       expect(body.data[0].first_name).toBe("Thomas");
-      expect(body.data[0].first_name).toBe("Jordan");
+      expect(body.data[1].first_name).toBe("Jordan");
     });
   });
 

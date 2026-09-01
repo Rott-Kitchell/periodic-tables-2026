@@ -54,8 +54,9 @@ app.notFound((c) => {
 });
 
 app.onError((err, c) => {
-  console.error("🚨 CRITICAL ENDPOINT RUNTIME ERROR:", err);
-  return c.json({ error: err.message || "Internal Server Error" }, 500);
+  const { status = 500, message = "Something went wrong!" } = err as any;
+  console.error(message);
+  return c.json({ error: message }, status);
 });
 
 // app.post(
