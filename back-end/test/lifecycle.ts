@@ -1,7 +1,7 @@
 import { beforeAll, beforeEach, afterAll } from "vitest";
 import { Kysely } from "kysely";
 import { setupTestDb } from "./helpers.js";
-import { runGlobalSeed } from "./seed.js";
+import { seed } from "../src/db/seeds/seed.js";
 import type { Database } from "../src/types.js";
 
 export function useTestLifecycle() {
@@ -31,7 +31,7 @@ export function useTestLifecycle() {
   });
 
   beforeEach(async () => {
-    await runGlobalSeed(dbInstance);
+    await seed(dbInstance);
   });
 
   afterAll(async () => {
