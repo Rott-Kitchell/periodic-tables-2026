@@ -1,7 +1,9 @@
-import { createMiddleware } from "hono/factory";
+import { createMiddleware, createFactory } from "hono/factory";
 import * as reservationsService from "./reservations.service.js";
 import { HTTPException } from "hono/http-exception";
 import { reservationValidator } from "../utils/validators.js";
+import type { Context } from "hono";
+const factory = createFactory();
 
 const reservationExists = createMiddleware(async (c, next) => {
   const reservationId = c.req.param("reservationId");
@@ -16,7 +18,7 @@ const reservationExists = createMiddleware(async (c, next) => {
   await next();
 });
 
-const list = createMiddleware(async (c) => {
+const list = async (c: Context) => {
   const reservationDate = c.req.query("date");
   if (reservationDate) {
     const data = await reservationsService.listByDate(reservationDate);
@@ -34,7 +36,7 @@ const list = createMiddleware(async (c) => {
 
   const data = await reservationsService.search(mobileNumber);
   c.json({ data });
-});
+};
 
 // async function create(req, res, next) {
 //   let reservation = req.body.data;
@@ -42,21 +44,21 @@ const list = createMiddleware(async (c) => {
 //   res.status(201).json({ data });
 // }
 
-const create = async (c: any) => {
+const create = factory.createHandlers(reservationValidator, async (c) => {
   const body = c.req.valid("json");
   let reservation = body.data;
   const data = await reservationsService.create(reservation);
   return c.json({ data }, 201);
-};
+});
 
 // async function read(req, res, next) {
 //   const { reservation } = res.locals;
 //   res.json({ data: reservation });
 // }
 
-const read = createMiddleware(async (c) => {
-  const reservation = c.get("reservation");
-  c.json({ data: reservation });
+const read = factory.createHandlers(reservationExists, (c: Context) => {
+  const reservation = c.var.reservation;
+  return c.json({ data: reservation });
 });
 
 // async function updateStatus(req, res, next) {

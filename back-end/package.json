@@ -5,7 +5,7 @@
   "description": "Modernized version of my 2021 Thinkful keystone project - back end",
   "main": "src/server.ts",
   "scripts": {
-    "dev": "tsx watch src/server.ts",
+    "dev": "tsx watch --env-file=.env src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
     "test": "vitest run --reporter=verbose --passWithNoTests",

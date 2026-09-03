@@ -14,7 +14,7 @@ export async function runGlobalSeed(db: Kysely<Database>): Promise<void> {
         last_name: "Buckley",
         mobile_number: "555-123-0100",
         party_size: 5,
-        reservation_date: "2026-12-15",
+        reservation_date: "2030-12-15",
         reservation_time: "19:00:00",
       },
       {
@@ -22,7 +22,7 @@ export async function runGlobalSeed(db: Kysely<Database>): Promise<void> {
         last_name: "Jean",
         mobile_number: "555-123-0199",
         party_size: 6,
-        reservation_date: "2026-12-16",
+        reservation_date: "2030-12-16",
         reservation_time: "20:00",
       },
       {
@@ -30,7 +30,7 @@ export async function runGlobalSeed(db: Kysely<Database>): Promise<void> {
         last_name: "Russell",
         mobile_number: "555-123-0125",
         party_size: 4,
-        reservation_date: "2026-12-15",
+        reservation_date: "2030-12-15",
         reservation_time: "20:00",
       },
       {
@@ -38,7 +38,7 @@ export async function runGlobalSeed(db: Kysely<Database>): Promise<void> {
         last_name: "Erak",
         mobile_number: "555-123-0130",
         party_size: 6,
-        reservation_date: "2026-12-15",
+        reservation_date: "2030-12-15",
         reservation_time: "18:00",
       },
       {
@@ -46,7 +46,7 @@ export async function runGlobalSeed(db: Kysely<Database>): Promise<void> {
         last_name: "Eilers",
         mobile_number: "555-123-0101",
         party_size: 1,
-        reservation_date: "2026-12-15",
+        reservation_date: "2030-12-15",
         reservation_time: "20:00",
       },
     ])

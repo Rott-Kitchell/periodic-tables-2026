@@ -12,14 +12,8 @@ type Env = {
 
 const reservationsRouter = new Hono<Env>();
 
-reservationsRouter
-  .get("/", controller.list)
-  .post(reservationValidator, controller.create);
+reservationsRouter.get("/", controller.list).post(...controller.create);
 
-reservationsRouter.get(
-  "/:reservationId",
-  controller.reservationExists,
-  controller.read,
-);
+reservationsRouter.get("/:reservationId", ...controller.read);
 
 export default reservationsRouter;

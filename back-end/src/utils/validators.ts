@@ -14,6 +14,7 @@ const ReservationSchema = z.object({
   party_size: z
     .int()
     .positive({ message: "party_size must be a positive integer number" }),
+  status: z.enum(["booked", "seated", "finished", "cancelled"]).optional(),
 });
 
 const TableSchema = z.object({
@@ -39,6 +40,53 @@ export const reservationValidator = zValidator(
       const customErrorMessage = `Missing or invalid property: ${fieldName}. Details: ${issue.message}`;
 
       return c.json({ error: customErrorMessage }, 400);
+    }
+    let reservation = result.data.data;
+
+    const reserveDate = new Date(
+        `${reservation.reservation_date} ${reservation.reservation_time} GMT-0500`,
+      ),
+      start = new Date(`${reservation.reservation_date} 10:30:00 GMT-0500`),
+      end = new Date(`${reservation.reservation_date} 21:30:00 GMT-0500`);
+
+    const todaysDate = new Date();
+
+    if (reserveDate.getDay() === 2) {
+      return c.json(
+        {
+          error:
+            "Reservations cannot be made on a Tuesday (Restaurant is closed).",
+        },
+        400,
+      );
+    }
+    if (reserveDate < todaysDate) {
+      return c.json(
+        {
+          error: "Reservations must be made in the future.",
+        },
+        400,
+      );
+    }
+    if (
+      reserveDate.getTime() < start.getTime() ||
+      reserveDate.getTime() > end.getTime()
+    ) {
+      return c.json(
+        {
+          error: "Reservations cannot be made outside of 10:30am to 9:30pm.",
+        },
+        400,
+      );
+    }
+
+    if (reservation.status && reservation.status !== "booked") {
+      return c.json(
+        {
+          error: `Status cannot be ${reservation.status}`,
+        },
+        400,
+      );
     }
   },
 );

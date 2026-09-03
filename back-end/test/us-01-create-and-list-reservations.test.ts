@@ -30,7 +30,7 @@ describe("US-01 - Create and list reservations", () => {
     test("returns only reservations matching date query parameter", async () => {
       expect.assertions(3);
       const response = await app.request(
-        "/reservations?date=2026-12-16",
+        "/reservations?date=2030-12-16",
         {
           headers: { Accept: "application/json" },
         },
@@ -49,7 +49,7 @@ describe("US-01 - Create and list reservations", () => {
     test("returns reservations sorted by time (earliest time first)", async () => {
       expect.assertions(4);
       const response = await app.request(
-        "/reservations?date=2026-12-15",
+        "/reservations?date=2030-12-15",
         {
           headers: { Accept: "application/json" },
         },
@@ -113,7 +113,7 @@ describe("US-01 - Create and list reservations", () => {
       const invalidData = {
         last_name: "last",
         mobile_number: "800-555-1212",
-        reservation_date: "2026-01-01",
+        reservation_date: "2030-01-02",
         reservation_time: "13:30",
         party_size: 1,
       };
@@ -145,7 +145,7 @@ describe("US-01 - Create and list reservations", () => {
         first_name: "",
         last_name: "last",
         mobile_number: "800-555-1212",
-        reservation_date: "2026-01-01",
+        reservation_date: "2030-01-02",
         reservation_time: "13:30",
         party_size: 1,
       };
@@ -175,7 +175,7 @@ describe("US-01 - Create and list reservations", () => {
       const invalidData = {
         first_name: "first",
         mobile_number: "800-555-1212",
-        reservation_date: "2026-01-01",
+        reservation_date: "2030-01-02",
         reservation_time: "13:30",
         party_size: 1,
       };
@@ -206,7 +206,7 @@ describe("US-01 - Create and list reservations", () => {
         first_name: "first",
         last_name: "",
         mobile_number: "800-555-1212",
-        reservation_date: "2026-01-01",
+        reservation_date: "2030-01-02",
         reservation_time: "13:30",
         party_size: 1,
       };
@@ -236,7 +236,7 @@ describe("US-01 - Create and list reservations", () => {
       const invalidData = {
         first_name: "first",
         last_name: "last",
-        reservation_date: "2026-01-01",
+        reservation_date: "2030-01-02",
         reservation_time: "13:30",
         party_size: 1,
       };
@@ -267,7 +267,7 @@ describe("US-01 - Create and list reservations", () => {
         first_name: "first",
         last_name: "last",
         mobile_number: "",
-        reservation_date: "2026-01-01",
+        reservation_date: "2030-01-02",
         reservation_time: "13:30",
         party_size: 1,
       };
@@ -390,7 +390,7 @@ describe("US-01 - Create and list reservations", () => {
         first_name: "first",
         last_name: "last",
         mobile_number: "800-555-1212",
-        reservation_date: "2026-01-01",
+        reservation_date: "2030-01-02",
         party_size: 1,
       };
 
@@ -420,7 +420,7 @@ describe("US-01 - Create and list reservations", () => {
         first_name: "first",
         last_name: "last",
         mobile_number: "800-555-1212",
-        reservation_date: "2026-01-01",
+        reservation_date: "2030-01-02",
         reservation_time: "",
         party_size: 1,
       };
@@ -451,7 +451,7 @@ describe("US-01 - Create and list reservations", () => {
         first_name: "first",
         last_name: "last",
         mobile_number: "800-555-1212",
-        reservation_date: "2026-12-01",
+        reservation_date: "2030-01-02",
         reservation_time: "not-a-time",
         party_size: 1,
       };
@@ -482,7 +482,7 @@ describe("US-01 - Create and list reservations", () => {
         first_name: "first",
         last_name: "last",
         mobile_number: "800-555-1212",
-        reservation_date: "2026-01-01",
+        reservation_date: "2030-01-02",
         reservation_time: "13:30",
       };
 
@@ -512,7 +512,7 @@ describe("US-01 - Create and list reservations", () => {
         first_name: "first",
         last_name: "last",
         mobile_number: "800-555-1212",
-        reservation_date: "2026-01-01",
+        reservation_date: "2027-01-01",
         reservation_time: "13:30",
         party_size: 0,
       };
@@ -543,7 +543,7 @@ describe("US-01 - Create and list reservations", () => {
         first_name: "first",
         last_name: "last",
         mobile_number: "800-555-1212",
-        reservation_date: "2026-12-01",
+        reservation_date: "2026-12-02",
         reservation_time: "13:30",
         party_size: "2",
       };
@@ -574,7 +574,7 @@ describe("US-01 - Create and list reservations", () => {
         first_name: "first",
         last_name: "last",
         mobile_number: "800-555-1212",
-        reservation_date: "2026-12-01",
+        reservation_date: "2026-12-02",
         reservation_time: "13:30",
         party_size: 2,
       };
@@ -608,7 +608,7 @@ describe("US-01 - Create and list reservations", () => {
           first_name: "first",
           last_name: "last",
           mobile_number: "800-555-1212",
-          reservation_date: expect.stringContaining("2026-12-01"),
+          reservation_date: expect.stringContaining("2026-12-02"),
           reservation_time: expect.stringContaining("13:30"),
           party_size: 2,
         }),
