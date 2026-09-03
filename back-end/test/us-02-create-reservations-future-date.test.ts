@@ -1,7 +1,7 @@
 import app from "../src/app.js";
 import { useTestLifecycle } from "./lifecycle.js";
 
-describe("US-02: Create reservations future date", () => {
+describe("US-02 - Create reservations future date", () => {
   const context = useTestLifecycle();
 
   describe("POST /reservations", () => {

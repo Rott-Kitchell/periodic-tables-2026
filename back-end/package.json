@@ -11,7 +11,7 @@
     "test": "vitest run --reporter=verbose --passWithNoTests",
     "migrate:latest": "kysely migrate:latest",
     "migrate:rollback": "kysely migrate:rollback",
-    "migrate:status": "kysely migrate:status"
+    "migrate:list": "kysely migrate:list"
   },
   "dependencies": {
     "@hono/node-server": "^2.1.1",

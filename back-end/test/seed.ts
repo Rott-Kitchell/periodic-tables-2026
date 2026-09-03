@@ -44,7 +44,7 @@ export async function runGlobalSeed(db: Kysely<Database>): Promise<void> {
       {
         first_name: "Alex",
         last_name: "Eilers",
-        mobile_number: "555-123-0101",
+        mobile_number: "317-123-0101",
         party_size: 1,
         reservation_date: "2030-12-15",
         reservation_time: "20:00",
