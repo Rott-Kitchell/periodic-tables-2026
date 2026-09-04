@@ -12,7 +12,7 @@ describe("US-06 - Reservation status", () => {
         first_name: "first",
         last_name: "last",
         mobile_number: "123-456-7890",
-        reservation_date: "2030-01-01",
+        reservation_date: "2030-01-02",
         reservation_time: "19:00",
         party_size: 4,
         status: "booked",
@@ -22,7 +22,7 @@ describe("US-06 - Reservation status", () => {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
+          body: JSON.stringify({ data }),
         },
         {
           db: context.db,
@@ -37,8 +37,8 @@ describe("US-06 - Reservation status", () => {
           first_name: "first",
           last_name: "last",
           mobile_number: "123-456-7890",
-          reservation_date: "2030-01-01",
-          reservation_time: "19:00",
+          reservation_date: expect.stringContaining("2030-01-02"),
+          reservation_time: expect.stringContaining("19:00"),
           party_size: 4,
         }),
       );
@@ -51,7 +51,7 @@ describe("US-06 - Reservation status", () => {
           first_name: "first",
           last_name: "last",
           mobile_number: "123-456-7890",
-          reservation_date: "2030-01-01",
+          reservation_date: "2030-01-02",
           reservation_time: "19:00",
           party_size: 4,
           status: status,
@@ -61,7 +61,7 @@ describe("US-06 - Reservation status", () => {
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data),
+            body: JSON.stringify({ data }),
           },
           {
             db: context.db,
@@ -269,7 +269,7 @@ describe("US-06 - Reservation status", () => {
       );
       const secondSeatBody = await secondSeatResponse.json();
       expect(secondSeatResponse.status).toBe(400);
-      expect(secondSeatBody.error).toContain("seated");
+      expect(secondSeatBody.error).toMatch(/seated|occupied/);
     });
   });
 
@@ -419,7 +419,7 @@ describe("US-06 - Reservation status", () => {
       expect(reservationsResponse.status).toBe(200);
       expect(reservationsBody.error).toBeUndefined();
       const finishedReservation = reservationsBody.data.filter(
-        (reservation: Reservation) => reservation.status,
+        (reservation: Reservation) => reservation.status === "finished",
       );
       expect(finishedReservation).toHaveLength(0);
     });

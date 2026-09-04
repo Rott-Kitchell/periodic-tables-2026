@@ -18,7 +18,7 @@ const ReservationSchema = z.object({
 });
 
 const TableSchema = z.object({
-  table_name: z.string().min(1, { message: "table_name is required" }),
+  table_name: z.string().min(2, { message: "table_name is required" }),
   capacity: z
     .int()
     .positive({ message: "capacity must be a positive integer number" }),

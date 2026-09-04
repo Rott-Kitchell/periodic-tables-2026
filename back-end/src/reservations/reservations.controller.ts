@@ -10,9 +10,12 @@ const reservationExists = createMiddleware(async (c, next) => {
   const reservationId = c.req.param("reservationId");
   const reservation = await reservationsService.read(Number(reservationId));
   if (!reservation) {
-    throw new HTTPException(404, {
-      message: `Reservation ${reservationId} cannot be found.`,
-    });
+    return c.json(
+      {
+        error: `Reservation ${reservationId} cannot be found.`,
+      },
+      404,
+    );
   }
 
   c.set("reservation", reservation);
@@ -36,7 +39,7 @@ const list = async (c: Context) => {
   }
 
   const data = await reservationsService.search(mobileNumber);
-  c.json({ data });
+  return c.json({ data });
 };
 
 const create = factory.createHandlers(reservationValidator, async (c) => {
@@ -81,7 +84,7 @@ const updateStatus = factory.createHandlers(reservationExists, async (c) => {
 
   const newData = await reservationsService.update(updatedRes);
 
-  return c.json({ data: newData }, 201);
+  return c.json({ data: newData }, 200);
 });
 
 const update = factory.createHandlers(
@@ -91,11 +94,11 @@ const update = factory.createHandlers(
     const body = c.req.valid("json");
     const reservation = c.var.reservation;
 
-    const updatedRes: UpdatedReservation = { ...reservation, ...body };
+    const updatedRes: UpdatedReservation = { ...reservation, ...body.data };
 
     const newData = await reservationsService.update(updatedRes);
 
-    return c.json({ data: newData }, 201);
+    return c.json({ data: newData }, 200);
   },
 );
 

@@ -11,9 +11,12 @@ const tableExists = createMiddleware(async (c, next) => {
   const tableId = c.req.param("tableId");
   const table = await tablesService.read(Number(tableId));
   if (!table) {
-    throw new HTTPException(404, {
-      message: `Table ${tableId} cannot be found.`,
-    });
+    return c.json(
+      {
+        error: `Table ${tableId} cannot be found.`,
+      },
+      404,
+    );
   }
 
   c.set("table", table);
@@ -81,12 +84,12 @@ const seatTable = factory.createHandlers(tableExists, async (c) => {
 
   const newData = await tablesService.update(updatedTable);
   if (newData) await reservationsService.update(updatedRes);
-  c.json({ data: newData });
+  return c.json({ data: newData });
 });
 
 const list = async (c: Context) => {
   const data = await tablesService.list();
-  c.json({ data });
+  return c.json({ data });
 };
 
 const create = factory.createHandlers(tableValidator, async (c) => {
@@ -120,7 +123,7 @@ const freeUpTable = factory.createHandlers(tableExists, async (c) => {
   };
   const newData = await tablesService.update(updatedTable);
   if (newData) await reservationsService.update(updatedRes);
-  c.json({ data: newData });
+  return c.json({ data: newData });
 });
 
 export { list, seatTable, create, freeUpTable };

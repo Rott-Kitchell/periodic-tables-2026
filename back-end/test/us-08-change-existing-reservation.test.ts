@@ -11,7 +11,7 @@ describe("US-08 - Change an existing reservation", () => {
         first_name: "first",
         last_name: "last",
         mobile_number: "123-456-7890",
-        reservation_date: "2030-01-01",
+        reservation_date: "2030-01-02",
         reservation_time: "19:00",
         party_size: 4,
       };
@@ -20,12 +20,12 @@ describe("US-08 - Change an existing reservation", () => {
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
+          body: JSON.stringify({ data }),
         },
         { db: context.db, schema: context.schema },
       );
       const body = await response.json();
-      expect(body.error).toBeUndefined();
+      expect(body.error).toBeDefined();
       expect(response.status).toBe(404);
     });
 
@@ -34,7 +34,7 @@ describe("US-08 - Change an existing reservation", () => {
         first_name: "Harley",
         last_name: "Poe",
         mobile_number: "1234567890",
-        reservation_date: "2030-01-01",
+        reservation_date: "2030-01-02",
         reservation_time: "19:00",
         party_size: 4,
       };
@@ -54,7 +54,7 @@ describe("US-08 - Change an existing reservation", () => {
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(expected),
+          body: JSON.stringify({ data: reservation }),
         },
         { db: context.db, schema: context.schema },
       );

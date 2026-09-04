@@ -278,13 +278,13 @@ describe("US-04 - Seat reservation", () => {
     beforeEach(async () => {
       barTableOne = await context.db
         .selectFrom("tables")
-        .where("table_name", "=", "Bar #1")
         .selectAll()
+        .where("table_name", "=", "Bar #1")
         .executeTakeFirstOrThrow();
       tableOne = await context.db
         .selectFrom("tables")
-        .where("table_name", "=", "#1")
         .selectAll()
+        .where("table_name", "=", "#1")
         .executeTakeFirstOrThrow();
     });
 
