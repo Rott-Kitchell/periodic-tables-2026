@@ -38,12 +38,6 @@ const list = async (c: Context) => {
   c.json({ data });
 };
 
-// async function create(req, res, next) {
-//   let reservation = req.body.data;
-//   const data = await reservationsService.create(reservation);
-//   res.status(201).json({ data });
-// }
-
 const create = factory.createHandlers(reservationValidator, async (c) => {
   const body = c.req.valid("json");
   let reservation = body.data;
@@ -51,72 +45,57 @@ const create = factory.createHandlers(reservationValidator, async (c) => {
   return c.json({ data }, 201);
 });
 
-// async function read(req, res, next) {
-//   const { reservation } = res.locals;
-//   res.json({ data: reservation });
-// }
-
-const read = factory.createHandlers(reservationExists, (c: Context) => {
+const read = factory.createHandlers(reservationExists, (c) => {
   const reservation = c.var.reservation;
   return c.json({ data: reservation });
 });
 
-// async function updateStatus(req, res, next) {
-//   const {
-//     data: { status },
-//   } = req.body;
-//   const { reservation } = res.locals;
-//   if (reservation.status === "finished") {
-//     return next({
-//       status: 400,
-//       message: `a finished reservation cannot be updated`,
-//     });
-//   }
+const updateStatus = factory.createHandlers(reservationExists, async (c) => {
+  const {
+    data: { status },
+  } = await c.req.json();
+  const reservation = c.var.reservation;
 
-//   if (!["booked", "seated", "finished", "cancelled"].includes(status)) {
-//     return next({
-//       status: 400,
-//       message: `Status cannot be ${status}`,
-//     });
-//   }
+  if (reservation.status === "finished") {
+    return c.json(
+      {
+        error: `a finished reservation cannot be updated`,
+      },
+      400,
+    );
+  }
+  if (!["booked", "seated", "finished", "cancelled"].includes(status)) {
+    return c.json(
+      {
+        error: `Status cannot be ${status}`,
+      },
+      400,
+    );
+  }
 
-//   const updatedRes = {
-//     ...reservation,
-//     status: status,
-//   };
+  const updatedRes = {
+    ...reservation,
+    status: status,
+  };
 
-//   const newData = await reservationsService.update(updatedRes);
+  const newData = await reservationsService.update(updatedRes);
 
-//   res.status(200).json({ data: newData });
-// }
+  return c.json({ newData }, 201);
+});
 
-// async function update(req, res, next) {
-//   const { data } = req.body;
-//   const { reservation } = res.locals;
+const update = factory.createHandlers(
+  reservationValidator,
+  reservationExists,
+  async (c) => {
+    const body = c.req.valid("json");
+    const reservation = c.var.reservation;
 
-//   const updatedRes = {
-//     ...reservation,
-//     ...data,
-//   };
+    const updatedRes = { ...reservation, ...body };
 
-//   const newData = await reservationsService.update(updatedRes);
+    const newData = await reservationsService.update(updatedRes);
 
-//   res.status(200).json({ data: newData });
-// }
+    return c.json({ newData }, 201);
+  },
+);
 
-// module.exports = {
-//   list: asyncErrorBoundary(list),
-//   create: [asyncErrorBoundary(hasValidFields), asyncErrorBoundary(create)],
-//   read: [asyncErrorBoundary(reservationExists), read],
-//   updateStatus: [
-//     asyncErrorBoundary(reservationExists),
-//     asyncErrorBoundary(updateStatus),
-//   ],
-//   update: [
-//     asyncErrorBoundary(hasValidFields),
-//     asyncErrorBoundary(reservationExists),
-//     asyncErrorBoundary(update),
-//   ],
-// };
-
-export { list, create, reservationExists, read };
+export { list, create, read, updateStatus, update };

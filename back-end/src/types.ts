@@ -27,7 +27,15 @@ export interface ReservationsTable {
 
 export type Reservation = Selectable<ReservationsTable>;
 export type NewReservation = Insertable<ReservationsTable>;
-export type UpdatedReservation = Updateable<ReservationsTable>;
+export type UpdatedReservation = Updateable<ReservationsTable> & {
+  reservation_id: number;
+};
+
+declare module "hono" {
+  interface ContextVariableMap {
+    reservation: Reservation;
+  }
+}
 
 export interface TablesTable {
   table_id: Generated<number>;
@@ -40,4 +48,6 @@ export interface TablesTable {
 
 export type Table = Selectable<TablesTable>;
 export type NewTable = Insertable<TablesTable>;
-export type UpdatedTable = Updateable<TablesTable>;
+export type UpdatedTable = Updateable<TablesTable> & {
+  table_id: number;
+};

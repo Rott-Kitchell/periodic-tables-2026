@@ -1,12 +1,10 @@
 import { sql } from "kysely";
 import { db } from "../db/config.js";
-import type { NewReservation } from "../types.js";
-
-// function list() {
-//   return knex("reservations")
-//     .select("*")
-//     .orderBy(["reservation_date", "reservation_time"]);
-// } *DONE*
+import type {
+  NewReservation,
+  UpdatedReservation,
+  Reservation,
+} from "../types.js";
 
 function list() {
   return db
@@ -17,14 +15,7 @@ function list() {
     .execute();
 }
 
-// function listByDate(reservation_date) {
-//   return knex("reservations")
-//     .select("*")
-//     .where({ reservation_date })
-//     .whereNot({ status: "finished" })
-//     .orderBy("reservation_time");
-// } *DONE*
-function listByDate(reservation_date: string) {
+function listByDate(reservation_date: Reservation["reservation_date"]) {
   return db
     .selectFrom("reservations")
     .selectAll()
@@ -34,12 +25,6 @@ function listByDate(reservation_date: string) {
     .execute();
 }
 
-// function create(reservation) {
-//   return knex("reservations")
-//     .insert(reservation)
-//     .returning("*")
-//     .then((createdRecords) => createdRecords[0]);
-// }
 function create(reservation: NewReservation) {
   return db
     .insertInto("reservations")
@@ -48,38 +33,24 @@ function create(reservation: NewReservation) {
     .executeTakeFirstOrThrow();
 }
 
-// function read(reservation_id) {
-//   return knex("reservations")
-//     .select("*")
-//     .where({ reservation_id: reservation_id })
-//     .first();
-// } *DONE*
-
-function read(reservation_id: number) {
+function read(reservation_id: Reservation["reservation_id"]) {
   return db
-    .selectFrom("reservations")
-    .where("reservation_id", "=", reservation_id)
+    .selectFrom("reservations as r")
+    .selectAll()
+    .where("r.reservation_id", "=", reservation_id)
     .executeTakeFirst();
 }
 
-// function update(updatedRes) {
-//   return knex("reservations")
-//     .select("*")
-//     .where({ reservation_id: updatedRes.reservation_id })
-//     .update(updatedRes, "*")
-//     .then((updatedRecords) => updatedRecords[0]);
-// }
+function update(updatedRes: UpdatedReservation) {
+  return db
+    .updateTable("reservations")
+    .set(updatedRes)
+    .where("reservation_id", "=", updatedRes.reservation_id)
+    .returningAll()
+    .executeTakeFirstOrThrow();
+}
 
-// function search(mobile_number) {
-//   return knex("reservations")
-//     .whereRaw(
-//       "translate(mobile_number, '() -', '') like ?",
-//       `%${mobile_number.replace(/\D/g, "")}%`,
-//     )
-//     .orderBy("reservation_date");
-// } *DONE*
-
-function search(mobile_number: string) {
+function search(mobile_number: Reservation["mobile_number"]) {
   const digits = mobile_number.replace(/\D/g, "");
   return db
     .selectFrom("reservations")
@@ -90,4 +61,4 @@ function search(mobile_number: string) {
     .execute();
 }
 
-export { list, listByDate, create, read, search };
+export { list, listByDate, create, read, update, search };
