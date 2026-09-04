@@ -3,6 +3,7 @@ import * as reservationsService from "./reservations.service.js";
 import { HTTPException } from "hono/http-exception";
 import { reservationValidator } from "../utils/validators.js";
 import type { Context } from "hono";
+import type { UpdatedReservation } from "../types.js";
 const factory = createFactory();
 
 const reservationExists = createMiddleware(async (c, next) => {
@@ -73,14 +74,14 @@ const updateStatus = factory.createHandlers(reservationExists, async (c) => {
     );
   }
 
-  const updatedRes = {
+  const updatedRes: UpdatedReservation = {
     ...reservation,
     status: status,
   };
 
   const newData = await reservationsService.update(updatedRes);
 
-  return c.json({ newData }, 201);
+  return c.json({ data: newData }, 201);
 });
 
 const update = factory.createHandlers(
@@ -90,11 +91,11 @@ const update = factory.createHandlers(
     const body = c.req.valid("json");
     const reservation = c.var.reservation;
 
-    const updatedRes = { ...reservation, ...body };
+    const updatedRes: UpdatedReservation = { ...reservation, ...body };
 
     const newData = await reservationsService.update(updatedRes);
 
-    return c.json({ newData }, 201);
+    return c.json({ data: newData }, 201);
   },
 );
 

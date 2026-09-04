@@ -4,6 +4,7 @@ import type { NewTable, UpdatedTable, Table } from "../types.js";
 function read(tableId: Table["table_id"]) {
   return db
     .selectFrom("tables as t")
+    .selectAll()
     .where("t.table_id", "=", tableId)
     .executeTakeFirst();
 }

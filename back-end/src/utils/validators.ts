@@ -90,3 +90,22 @@ export const reservationValidator = zValidator(
     }
   },
 );
+
+export const tableValidator = zValidator(
+  "json",
+  z.object({ data: TableSchema }),
+  (result, c) => {
+    if (!result.success) {
+      // 1. Target the first broken validation issue row element item
+      const issue = result.error.issues[0];
+
+      // 2. Extract the field name path (e.g., 'first_name', 'last_name')
+      const fieldName = String(issue.path[issue.path.length - 1] || "field");
+
+      // 3. Build a targeted error string to pass your specific 'toContain' test conditions
+      const customErrorMessage = `Missing or invalid property: ${fieldName}. Details: ${issue.message}`;
+
+      return c.json({ error: customErrorMessage }, 400);
+    }
+  },
+);

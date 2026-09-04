@@ -31,12 +31,6 @@ export type UpdatedReservation = Updateable<ReservationsTable> & {
   reservation_id: number;
 };
 
-declare module "hono" {
-  interface ContextVariableMap {
-    reservation: Reservation;
-  }
-}
-
 export interface TablesTable {
   table_id: Generated<number>;
   table_name: string;
@@ -51,3 +45,10 @@ export type NewTable = Insertable<TablesTable>;
 export type UpdatedTable = Updateable<TablesTable> & {
   table_id: number;
 };
+
+declare module "hono" {
+  interface ContextVariableMap {
+    reservation: Reservation;
+    table: Table;
+  }
+}
