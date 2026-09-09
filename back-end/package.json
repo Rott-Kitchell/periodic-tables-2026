@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "tsx watch --env-file=.env src/server.ts",
     "build": "tsc",
-    "start": "node dist/server.js",
+    "start": "node dist/src/server.js",
     "test": "vitest run --reporter=verbose --passWithNoTests",
     "migrate:latest": "kysely migrate:latest",
     "migrate:rollback": "kysely migrate:rollback",
