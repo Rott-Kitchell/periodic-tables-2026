@@ -1,9 +1,12 @@
-import { serve } from "@hono/node-server";
-
 import app from "./app.js";
 
-const port = Number(process.env.PORT ?? 5000);
+if (process.env.NODE_ENV !== "production") {
+  const { serve } = await import("@hono/node-server");
+  const port = Number(process.env.PORT ?? 5000);
 
-serve({ fetch: app.fetch, port }, (info) => {
-  console.log(`Server running on http://localhost:${port}`);
-});
+  serve({ fetch: app.fetch, port }, () => {
+    console.log(`Server running on http://localhost:${port}`);
+  });
+}
+
+export default app.fetch;

@@ -59,49 +59,4 @@ app.onError((err, c) => {
   return c.json({ error: message }, status);
 });
 
-// app.post(
-//   "/reservations",
-//   zValidator("json", z.object({ data: ReservationSchema }), (result, c) => {
-//     if (!result.success) {
-//       // 1. Target the first broken validation issue row element item
-//       const issue = result.error.issues[0];
-
-//       // 2. Extract the field name path (e.g., 'first_name', 'last_name')
-//       const fieldName = String(issue.path[issue.path.length - 1] || "field");
-
-//       // 3. Build a targeted error string to pass your specific 'toContain' test conditions
-//       const customErrorMessage = `Missing or invalid property: ${fieldName}. Details: ${issue.message}`;
-
-//       return c.json({ error: customErrorMessage }, 400);
-//     }
-//   }),
-//   async (c) => {
-//     const db = c.get("db");
-//     const body = c.req.valid("json");
-
-//     if (!db) {
-//       return c.json(
-//         { error: "Database instance context not initialized." },
-//         500,
-//       );
-//     }
-
-//     const newRecord = await db
-//       .insertInto("reservations")
-//       .values({
-//         first_name: body.data.first_name,
-//         last_name: body.data.last_name,
-//         mobile_number: body.data.mobile_number,
-//         reservation_date: body.data.reservation_date,
-//         reservation_time: body.data.reservation_time,
-//         party_size: body.data.party_size,
-//         status: "booked",
-//       })
-//       .returningAll()
-//       .executeTakeFirstOrThrow();
-
-//     return c.json({ data: newRecord }, 201);
-//   },
-// );
-
 export default app;
