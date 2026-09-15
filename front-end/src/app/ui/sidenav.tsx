@@ -4,11 +4,12 @@ import {
   MagnifyingGlassIcon,
   PlusIcon,
   ChevronLeftIcon,
+  CubeIcon,
 } from "@heroicons/react/24/solid";
 
 export default function SideNav() {
   return (
-    <nav className="flex flex-col items-start bg-gray-950 text-white p-0 min-h-full w-full">
+    <nav className="flex flex-col items-start text-white p-0 min-h-full w-full">
       <div className="w-full flex flex-col p-0">
         <Link
           className="flex justify-center items-center m-0 py-4 w-full text-center"
@@ -60,14 +61,14 @@ export default function SideNav() {
               href="/tables/new"
             >
               {/* Note: Heroicons v2 uses RectangleStackIcon for layered UI concepts */}
-              <Squares2X2Icon className="h-5 w-5 mr-3 text-gray-400 group-hover:text-white transition-colors" />
+              <CubeIcon className="h-5 w-5 mr-3 text-gray-400 group-hover:text-white transition-colors" />
               <span className="font-medium text-sm">New Table</span>
             </Link>
           </li>
         </ul>
 
         {/* Sidebar Toggle (Hidden on mobile, flex on desktop) */}
-        <div className="text-center hidden md:flex justify-center p-4 mt-auto w-full">
+        {/* <div className="text-center hidden md:flex justify-center p-4 mt-auto w-full">
           <button
             className="w-8 h-8 rounded-full bg-gray-800 hover:bg-gray-700 transition-colors text-gray-400 hover:text-white flex items-center justify-center"
             id="sidebarToggle"
@@ -75,7 +76,7 @@ export default function SideNav() {
           >
             <ChevronLeftIcon className="h-5 w-5" />
           </button>
-        </div>
+        </div> */}
       </div>
     </nav>
   );
