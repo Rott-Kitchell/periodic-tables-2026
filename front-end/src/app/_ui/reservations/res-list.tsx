@@ -1,3 +1,5 @@
+export default function ResList() {}
+
 // <div className="w-full lg:w-1/2 p-0" key={reservation_id}>
 //   {/* card border-dark -> border-gray-900 rounded shadow-sm */}
 //   <div className="border border-gray-900 rounded bg-white shadow-sm" id={reservation_id}>

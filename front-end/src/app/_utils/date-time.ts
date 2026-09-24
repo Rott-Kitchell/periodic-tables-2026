@@ -1,3 +1,5 @@
+import { Table, Reservation } from "./definitions";
+
 export function asDateString(date: Date | string = new Date()): string {
   const target = typeof date === "string" ? new Date(date) : date;
 
@@ -27,4 +29,24 @@ export function next(currentDate: string): string {
   const date = new Date(`${currentDate}T00:00:00`);
   date.setDate(date.getDate() + 1);
   return asDateString(date);
+}
+
+export function formatReservation(reservations: Reservation[]): Reservation[];
+export function formatReservation(reservations: Reservation): Reservation;
+
+export function formatReservation(reservations: Reservation | Reservation[]) {
+  if (Array.isArray(reservations)) {
+    return reservations.map((r) => {
+      return {
+        ...r,
+        reservation_date: formatAsDate(r.reservation_date),
+        reservation_time: formatAsTime(r.reservation_time),
+      };
+    });
+  }
+  return {
+    ...reservations,
+    reservation_date: formatAsDate(reservations.reservation_date),
+    reservation_time: formatAsTime(reservations.reservation_time),
+  };
 }
