@@ -1,7 +1,10 @@
 import { formatReservation } from "./date-time";
 import { Reservation, Table } from "./definitions";
 
-const API_URL = process.env.API_BASE_URL || "http://localhost:5000";
+const API_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL ||
+  process.env.API_BASE_URL ||
+  "http://localhost:5000";
 
 const headers = new Headers({
   "Content-Type": "application/json",
