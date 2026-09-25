@@ -14,7 +14,7 @@ export function ResListSkeleton() {
 
 export function ResSkeleton() {
   return (
-    <div className={`${shimmer} relative overflow-hidden w-full lg:w-1/2 p-0`}>
+    <div className={`${shimmer} relative overflow-hidden w-full p-0`}>
       <div className="rounded border border-gray-900 shadow-sm bg-white">
         <div className="p-2">
           {/* Header */}
@@ -88,7 +88,7 @@ export function TableListSkeleton() {
 }
 export function TableSkeleton() {
   return (
-    <div className={`${shimmer} relative overflow-hidden w-full lg:w-1/2 p-0`}>
+    <div className={`${shimmer} relative overflow-hidden w-full p-0`}>
       <div className="rounded border border-gray-900 shadow-sm bg-white">
         <div className="p-2">
           {/* Header */}

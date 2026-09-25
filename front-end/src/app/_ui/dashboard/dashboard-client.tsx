@@ -5,9 +5,14 @@ import { ResListSkeleton, TableListSkeleton } from "@/app/_ui/skeletons";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { next, today, previous } from "@/app/_utils/date-time";
 import TableList from "../tables/table-list";
-import { listReservations, listTables } from "@/app/_utils/api";
+import {
+  changeReservationStatus,
+  listReservations,
+  listTables,
+} from "@/app/_utils/api";
 import { Reservation, Table } from "@/app/_utils/definitions";
 import ErrorAlert from "./error-alert";
+import ResList from "../reservations/res-list";
 
 export default function DashboardClient() {
   const router = useRouter();
@@ -54,8 +59,29 @@ export default function DashboardClient() {
     if (date) loadDashboard();
   }, [date, pathname]);
 
+  function handleCancel(reservation_id: number) {
+    const abortController = new AbortController();
+    let result = window.confirm(
+      "Do you want to cancel this reservation? \n \n This cannot be undone.",
+    );
+    if (result)
+      changeReservationStatus(
+        reservation_id,
+        "cancelled",
+        abortController.signal,
+      )
+        .then(() => window.location.reload())
+        .catch(setReservationsError);
+
+    return () => abortController.abort();
+  }
+
+  const visibleReservations = reservations.filter(
+    (r) => r.status !== "cancelled",
+  );
+
   return (
-    <main>
+    <main className="mx-2">
       <h1 className="text-center font-bold text-3xl my-6">Dashboard</h1>
       <ErrorAlert error={reservationsError} title={"Reservations"} />
       <ErrorAlert error={tablesError} title={"Tables"} />
@@ -95,7 +121,12 @@ export default function DashboardClient() {
           </div>
 
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-            <Suspense fallback={<ResListSkeleton />}></Suspense>
+            <Suspense fallback={<ResListSkeleton />}>
+              <ResList
+                reservations={visibleReservations}
+                handleCancel={handleCancel}
+              />
+            </Suspense>
 
             {/* {reservations ? (
               <ResList
