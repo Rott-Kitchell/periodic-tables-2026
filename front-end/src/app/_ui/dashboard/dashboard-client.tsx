@@ -88,7 +88,17 @@ export default function DashboardClient() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
         <div className="w-full">
           <h4 className="mb-2 text-center text-xl font-semibold">
-            Reservations for {date}
+            Reservations for{" "}
+            <input
+              type="date"
+              value={date}
+              onChange={(e) => {
+                if (e.target.value) {
+                  navigateToDate(e.target.value);
+                }
+              }}
+              className="border border-gray-300 rounded-md px-2 py-1 text-md"
+            />
           </h4>
           <div className="mb-4 text-center">
             <div

@@ -9,7 +9,9 @@ type ResListProps = {
 
 export default function ResList({ reservations, handleCancel }: ResListProps) {
   if (reservations.length === 0) {
-    return <div>No reservations for this date</div>;
+    return (
+      <div className="text-center w-full">No reservations for this date</div>
+    );
   }
 
   return reservations.map((reservation) => {
